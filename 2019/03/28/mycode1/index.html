@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="雅的博客">
 <meta property="og:description" content="每周一练###letcode 1:Two Sum, letcode 18:4Sum，类似的还有3Sum,在数组中寻找几个数的值构成特定目标和，在求两个和中第一想到的是暴力破解，但在求职面试中，我们要注意方法的运用，可以使用c++的unordered_map利用哈希表降低复杂度。 class Solution {//给定一个数组和一个目标值，给出两个数值相加和为目标值的下标 public: vect">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-28T05:55:35.945Z">
+<meta property="og:updated_time" content="2019-03-28T06:00:55.896Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="每周一练">
 <meta name="twitter:description" content="每周一练###letcode 1:Two Sum, letcode 18:4Sum，类似的还有3Sum,在数组中寻找几个数的值构成特定目标和，在求两个和中第一想到的是暴力破解，但在求职面试中，我们要注意方法的运用，可以使用c++的unordered_map利用哈希表降低复杂度。 class Solution {//给定一个数组和一个目标值，给出两个数值相加和为目标值的下标 public: vect">
@@ -411,15 +411,54 @@ vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
 
     return{-1,-1};
 
-}
+ }
 };
-</code></pre><p>####在函数中找4个值构造目标和，思路是前两个值用for循环遍历，后两个值采用二分查找法，同时在这4个值中都要手工消除重复，或使用c++中的set<br>    class Solution {<br>    public:<br>    vector&lt;vector<int>&gt; fourSum(vector<int>&amp; nums, int target) {<br>        vector&lt;vector<int>&gt; res;<br>        if(nums.size() &lt; 4) return res;<br>        sort(nums.begin(),nums.end());<br>        for(int i = 0; i &lt; nums.size()-3;i++){<br>            if(i&gt;0&amp;&amp;nums[i]==nums[i-1])continue;//不要从一个相同的点出发<br>            for(int j = i+1; j&lt;nums.size()-2;j++){<br>                if(j&gt;i+1 &amp;&amp; nums[j]==nums[j-1])continue;<br>                int lo = j+1,hi=nums.size()-1;<br>                while(lo&lt;hi){<br>                    int sum = nums[i]+nums[j]+nums[lo]+nums[hi];<br>                    if(sum == target){<br>                        int arr[]={nums[i],nums[j],nums[lo],nums[hi]};<br>                        size_t count = sizeof(arr)/sizeof(int);<br>                        vector<int> ivec3(arr,arr+count);<br>                        res.push_back(ivec3);<br>                        while(lo&lt;hi &amp;&amp;nums[lo]==nums[lo+1])lo++;<br>                        while(lo&lt;hi &amp;&amp;nums[hi] == nums[hi-1])hi–;<br>                        lo++;<br>                        hi–;<br>                    }<br>                    else if(sum &lt; target) lo++;<br>                    else hi–;<br>                }<br>            }</int></int></int></int></p>
-<pre><code>    }
+</code></pre><p>####在函数中找4个值构造目标和，思路是前两个值用for循环遍历，后两个值采用二分查找法，同时在这4个值中都要手工消除重复，或使用c++中的set</p>
+<pre><code>class Solution {
+public:
+vector&lt;vector&lt;int&gt;&gt; fourSum(vector&lt;int&gt;&amp; nums, int target) {
+    vector&lt;vector&lt;int&gt;&gt; res;
+    if(nums.size() &lt; 4) return res;
+    sort(nums.begin(),nums.end());
+    for(int i = 0; i &lt; nums.size()-3;i++){
+        if(i&gt;0&amp;&amp;nums[i]==nums[i-1])continue;//不要从一个相同的点出发
+        for(int j = i+1; j&lt;nums.size()-2;j++){
+            if(j&gt;i+1 &amp;&amp; nums[j]==nums[j-1])continue;
+            int lo = j+1,hi=nums.size()-1;
+            while(lo&lt;hi){
+                int sum = nums[i]+nums[j]+nums[lo]+nums[hi];
+                if(sum == target){
+                    int arr[]={nums[i],nums[j],nums[lo],nums[hi]};
+                    size_t count = sizeof(arr)/sizeof(int);
+                    vector&lt;int&gt; ivec3(arr,arr+count);
+                    res.push_back(ivec3); 
+                    while(lo&lt;hi &amp;&amp;nums[lo]==nums[lo+1])lo++;
+                    while(lo&lt;hi &amp;&amp;nums[hi] == nums[hi-1])hi--;
+                    lo++;
+                    hi--;
+                }
+                else if(sum &lt; target) lo++;
+                else hi--;
+            }
+        }
+
+    }
     return res;
   }
 };
-</code></pre><p>####三个动态规划算法 leetcode62：Unique Paths,leetcode63:Unique Paths II，leetcode64 Minimum Path Sum;f[i][j]代表到i，j节点的路径数，因为只能向下或向右走，所以   f[i][j]=f[i-1][j]+f[i][j-1],在i，j的方案数，等于到它左面节点和上面节点的方案数之和，我们可以采用新创建一个二维数组，也可以使用一维数组，注释的是另外一种方案<br>    class Solution {//动态规划问题<br>    public:<br>    int uniquePaths(int m, int n) {<br>    //         int f[m][n];<br>    //         for(int i = 0; i &lt; m; i++){<br>    //             f[i][0] = 1;<br>    //         }<br>    //         for(int i = 0; i &lt; n; i++){<br>    //             f[0][i] = 1;<br>    //         }</p>
-<pre><code>//         for(int i = 1; i &lt; m; i++){
+</code></pre><p>####三个动态规划算法 leetcode62：Unique Paths,leetcode63:Unique Paths II，leetcode64 Minimum Path Sum;f[i][j]代表到i，j节点的路径数，因为只能向下或向右走，所以   f[i][j]=f[i-1][j]+f[i][j-1],在i，j的方案数，等于到它左面节点和上面节点的方案数之和，我们可以采用新创建一个二维数组，也可以使用一维数组，注释的是另外一种方案</p>
+<pre><code>class Solution {//动态规划问题
+public:
+int uniquePaths(int m, int n) {
+//         int f[m][n];
+//         for(int i = 0; i &lt; m; i++){
+//             f[i][0] = 1;
+//         }
+//         for(int i = 0; i &lt; n; i++){
+//             f[0][i] = 1;
+//         }
+
+//         for(int i = 1; i &lt; m; i++){
 //             for(int j = 1; j &lt; n; j++){
 //                 f[i][j] = f[i-1][j] + f[i][j-1];
 //             }
@@ -439,8 +478,26 @@ vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
 
         }
 };
-</code></pre><p>####增加路径障碍后需要增加判断，另外要注意的是方案数会超多int的取值范围，所以我用的double,代码通过。在注释的第二种方案中，因为数组是题目定义的，无法修改为double,所以不采用。<br>    class Solution {//增加一些障碍的路径策略，有路障的地方为0<br>    public:<br>    int uniquePathsWithObstacles(vector&lt;vector<int>&gt;&amp; obstacleGrid) {<br>         int m = obstacleGrid.size();<br>         int n = obstacleGrid[0].size();<br>        vector&lt;vector<double>&gt; dp(m+1,vector<double>(n+1,0));<br>        dp[0][1] = 1;<br>        for(int i = 1; i &lt;= m; i++){<br>            for(int j = 1; j &lt;= n; j++){<br>                if(!obstacleGrid[i-1][j-1]){<br>                    dp[i][j] = dp[i-1][j] + dp[i][j-1];//超过int所能表示的最大值，怎么办，用double<br>                }<br>            }<br>        }<br>        return dp[m][n];</double></double></int></p>
-<pre><code>//         if(obstacleGrid[0][0] == 1){
+</code></pre><p>####增加路径障碍后需要增加判断，另外要注意的是方案数会超多int的取值范围，所以我用的double,代码通过。在注释的第二种方案中，因为数组是题目定义的，无法修改为double,所以不采用。</p>
+<pre><code>class Solution {//增加一些障碍的路径策略，有路障的地方为0
+public:
+int uniquePathsWithObstacles(vector&lt;vector&lt;int&gt;&gt;&amp; obstacleGrid) {
+     int m = obstacleGrid.size();
+     int n = obstacleGrid[0].size();
+    vector&lt;vector&lt;double&gt;&gt; dp(m+1,vector&lt;double&gt;(n+1,0));
+    dp[0][1] = 1;
+    for(int i = 1; i &lt;= m; i++){
+        for(int j = 1; j &lt;= n; j++){
+            if(!obstacleGrid[i-1][j-1]){
+                dp[i][j] = dp[i-1][j] + dp[i][j-1];//超过int所能表示的最大值，怎么办，用double
+            }
+        }
+    }
+    return dp[m][n];
+
+
+
+//         if(obstacleGrid[0][0] == 1){
 //             return 0;
 //         }
 //         obstacleGrid[0][0] = 1;
@@ -488,7 +545,7 @@ int minPathSum(vector&lt;vector&lt;int&gt;&gt;&amp; grid) {
     return grid[m-1][n-1];
  }
 };
-</code></pre><p>学会写博客的便时便利的好方法！！</p>
+</code></pre><p>###学会写博客的便时便利的好方法！！</p>
 
       
     </div>

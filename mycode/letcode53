@@ -1,0 +1,52 @@
+class Solution {//给定整数数组num，查找具有最大和的连续子数组(至少包含一个数字)并返回其和。
+public:
+    int divide(vector<int>& nums,int low,int high)
+    {
+        if(low == high) return nums[low];
+        if(low == high-1)return max(nums[low]+nums[high],max(nums[low],nums[high]));
+        int mid = (low+high)/2;
+        int lmax = divide(nums,low,mid-1);
+        int rmax = divide(nums,mid+1,high);
+        int mmax = nums[mid];
+        int temp = mmax;
+        for(int i = mid-1; i >= low; i--){
+            temp += nums[i];
+            if(temp > mmax)mmax = temp;
+        }
+        temp = mmax;
+        for(int i = mid+1; i <= high; i++){
+            temp += nums[i];
+            if(temp > mmax) mmax = temp;
+        }
+        return max(mmax,max(lmax,rmax));
+        
+    }
+    int maxSubArray(vector<int>& nums) {
+//         int sum[100000];//O(n)
+//         sum[0] = nums[0];
+//         int max = sum[0];
+//         for(int i = 1; i < nums.size(); i++){
+//             if(sum[i-1] < 0){
+//                 sum[i] = nums[i];
+//             }
+//             else{
+//                 sum[i] = sum[i-1]+nums[i];
+//             }
+//             if(sum[i]>max){
+//                 max = sum[i];
+//             }
+            
+//         }
+        
+        //改进方案：分治法（参考）
+        /*
+            （1）区间完全在A[low,mid-1]
+            (2)区间完全在A[mid+1,high]
+            (3)区间包含有A[mid]
+        */
+        
+      
+        return divide(nums,0,nums.size()-1);
+        
+    }
+};

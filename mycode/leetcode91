@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int numDecodings(string s) {
+        //长度为i的解码种数=长度为i-1的解码种数+长度为i-2的解码种数
+        vector<int>dp(s.length()+1,0);
+        dp[0] = 1;
+        dp[1]= (s.at(0)=='0') ? 0 : 1;
+        for(int i = 2; i <= s.length();i++)
+        {
+            if(stoi(s.substr(i-2,2))<=26 && stoi(s.substr(i-2,2)) >= 10)
+            {
+                dp[i] += dp[i-2];
+            }
+            if(stoi(s.substr(i-1,1)) != 0)
+            {
+                dp[i] += dp[i-1];
+            }
+        }
+        return dp[s.length()];
+    
+      
+        
+    }
+};

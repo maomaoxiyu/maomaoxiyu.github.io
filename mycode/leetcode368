@@ -1,0 +1,37 @@
+class Solution {//返回最大整除子集，里面的每一个元素对都可以整除
+public:
+    vector<int> largestDivisibleSubset(vector<int>& nums) {
+         //1.这是动态规划，我们怎么寻找子问题（排序）
+        //2.动态规划的式子dp[i]代表nums[i]能整除的个数，若nums[j]能被nums[i]整除，则dp[j]=max(dp[i]+1,dp[j]);
+        //3.怎么记录最长路径，之前返回的可能是路径的长度，这里返回路径
+        sort(nums.begin(),nums.end());//从小到大
+        vector<int> dp(nums.size(),0),parent(nums.size(),0),res;
+        int mx = 0, mx_idx = 0;
+        for(int i = nums.size()-1; i>=0; i--)
+        {
+            for(int j = i; j < nums.size(); j++)
+            {
+                if(nums[j]%nums[i]==0 && dp[i] < dp[j]+1){//j比i大
+                    dp[i] = dp[j]+1;
+                    parent[i] = j;
+                    if(mx < dp[i])
+                    {
+                        mx = dp[i];
+                        mx_idx = i;
+                    }
+                }
+            }
+        }
+        
+        for(int i = 0; i < mx; i++)
+        {
+            res.push_back(nums[mx_idx]);
+            mx_idx = parent[mx_idx];
+        }
+        return res;
+        
+        
+        
+        
+    }
+};
